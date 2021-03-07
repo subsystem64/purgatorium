@@ -34,6 +34,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\..\systemservice.exe" />
+    <None Include="..\..\..\..\..\boot.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\..\..\hook.dll" />
+    <None Include="..\..\..\..\..\injector.exe" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\..\..\..\e9b4c65fb45f70ad1b573f67e486d91c.jpg">

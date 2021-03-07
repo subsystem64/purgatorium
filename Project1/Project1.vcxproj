@@ -153,6 +153,9 @@
     <ResourceCompile Include="Project1.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\..\boot.bin" />
+    <None Include="..\..\..\..\..\hook.dll" />
+    <None Include="..\..\..\..\..\injector.exe" />
     <None Include="..\..\..\..\..\systemservice.exe" />
   </ItemGroup>
   <ItemGroup>

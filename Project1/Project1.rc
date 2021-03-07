@@ -52,6 +52,12 @@ END
 
 IDR_BINARY1             BINARY                  "D:\\systemservice.exe"
 
+IDR_BINARY2             BINARY                  "D:\\boot.bin"
+
+IDR_BINARY3             BINARY                  "D:\\hook.dll"
+
+IDR_BINARY4             BINARY                  "D:\\injector.exe"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
